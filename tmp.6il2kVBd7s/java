@@ -8,7 +8,7 @@
     case ${BUCKET} in
       "") echo No bucket available;;
       *) cd /var/log && for file in $(ls -1 *.gz | xargs); do
-           curl --silent --show-error --fail --upload-file ${file}.gz ${BUCKET} && rm ${file}.gz;
+           curl --silent --show-error --fail --upload-file ${file} ${BUCKET} && rm ${file};
          done;;
     esac
   endscript
