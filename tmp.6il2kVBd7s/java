@@ -4,6 +4,8 @@
   daily
   compress
   missingok
+  copytruncate
+  rotate 1
   lastaction
     case ${BUCKET} in
       "") echo No bucket available;;
