@@ -1,5 +1,5 @@
-/var/log/err
-/var/log/out
+/var/log/*_err
+/var/log/*_out
 {
   daily
   compress
