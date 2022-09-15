@@ -17,7 +17,7 @@ docker run -it --name test uhe:latest
 ```
 
 </li>
-<li>
+<li>The following, along with the ones inherited from <a href="https://github.com/joavila/java/tree/master/tmp.I1JPAuziQF">here</a>
 <table>
 <tr>
 <th>
@@ -28,23 +28,6 @@ Usage
 </th>
 </tr>
 <tr>
-<td>
-DESTINATION_FQDN
-</td>
-<td>Defines destination FQDN. <i>www.nowayjose1.com</i> otherwise.
-</tr>
-<tr>
-<td>
-DESTINATION_PORT
-</td>
-<td>Defines destination PORT. <i>80</i> otherwise.
-</tr>
-<tr>
-<td>
-TTL
-</td>
-<td>Defines <i>networkaddress.cache.ttl</i>. <i>120</i> otherwise.
-</tr><tr>
 <td>
 BUCKET
 </td>
