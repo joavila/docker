@@ -1,4 +1,4 @@
-#!/bin/ash --
+#!/bin/bash --
 
 cat << EOF
 HTTP/1.1 204 OK
