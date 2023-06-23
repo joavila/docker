@@ -7,11 +7,12 @@
   copytruncate
   rotate 1
   lastaction
-    case ${BUCKET} in
+    case $BUCKET in
       "") echo No bucket available;;
-      *) cd /var/log && for file in $(ls -1 *.gz | xargs); do
-           curl --silent --show-error --fail --upload-file ${file} ${BUCKET} && rm ${file};
-         done;;
+       *) for file in /var/log/*.gz; do
+           [ -e "$file" ] || continue
+           curl --silent --show-error --fail --upload-file "$file" $BUCKET && rm "$file";
+          done;;
     esac
   endscript
 }
