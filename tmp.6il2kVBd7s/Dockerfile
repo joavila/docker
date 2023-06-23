@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 FROM adoptopenjdk/openjdk8:x86_64-ubi-minimal-jdk8u292-b10-slim
-RUN microdnf update && microdnf install logrotate curl nc cronie
+RUN microdnf update && microdnf install curl nc cronie logrotate
 WORKDIR /etc/logrotate.d/
 COPY java java
 WORKDIR /tmp
