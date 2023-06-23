@@ -7,4 +7,4 @@ nc -lk -p 80 -e /tmp/nc_reply.sh &
 java HelloWorld > /var/log/${HOSTNAME}_out 2> /var/log/${HOSTNAME}_err &
 
 # Starts crond in the foreground to enable logrotate
-crond -sn
+crond -n -m off
