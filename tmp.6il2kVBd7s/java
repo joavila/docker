@@ -1,4 +1,5 @@
-/var/log/*_err
+# check /var/lib/logrotate/logrotate.status
+
 /var/log/*_out
 {
   daily
@@ -6,13 +7,7 @@
   missingok
   copytruncate
   rotate 1
-  lastaction
-    case $BUCKET in
-      "") echo No bucket available;;
-       *) for file in /var/log/*.gz; do
-           [ -e "$file" ] || continue
-           curl --silent --show-error --fail --upload-file "$file" $BUCKET && rm "$file";
-          done;;
-    esac
+  postrotate
+    echo $1.1.gz > /tmp/message
   endscript
 }
