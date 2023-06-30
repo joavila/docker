@@ -10,14 +10,23 @@ java HelloWorld | tee /var/log/${HOSTNAME}_out 2> /proc/1/fd/2 1> /proc/1/fd/1 &
 # Starts crond to enable logrotate without reporting
 crond -m off
 
-#Creates pipe
+#Creates pipe for rotation details exchange
 mkfifo /tmp/message
 
 # Reads from pipe until logrotate kicks in
-while read filepath < /tmp/message
+while read FILE < /tmp/message
 do
-    curl --silent --show-error --fail --upload-file "${filepath}" "${BUCKET}" && \
-	    rm "${filepath}" && \
-	    /bin/echo "Upload OK ${filepath}" > /proc/1/fd/1 || \
-	    /bin/echo "Upload NOK ${filepath}" > /proc/1/fd/2; 
+  if [ -f "$FILE" ]; then
+    echo "Rotated file is $FILE" > /proc/1/fd/1; 
+    if [ -z "$BUCKET" ]; then
+      echo "Bucket definition is missing." > /proc/1/fd/2; 
+    else
+      curl --silent --show-error --fail --upload-file "$FILE" "$BUCKET" && \
+        rm "$FILE" && \
+        echo "Upload OK $FILE" > /proc/1/fd/1 || \
+        echo "Upload NOK $FILE" > /proc/1/fd/2; 
+    fi
+  else 
+    echo "$FILE does not exist." > /proc/1/fd/2; 
+  fi
 done
