@@ -4,10 +4,9 @@
 {
   daily
   compress
-  missingok
   copytruncate
   rotate 1
   postrotate
-    echo $1.1.gz > /tmp/message
+    echo $2 > /tmp/message
   endscript
 }
