@@ -13,20 +13,28 @@ crond -m off
 #Creates pipe for rotation details exchange
 mkfifo /tmp/message
 
+#Defines utilitary function
+process()
+{
+	for FILE in "$@"; do
+		if [ -f "$FILE" ]; then
+			echo "Rotated file is $FILE" > /proc/1/fd/1; 
+			if [ -z "$BUCKET" ]; then
+				echo "Bucket definition is missing." > /proc/1/fd/2; 
+			else
+				curl --silent --show-error --fail --upload-file "$FILE" "$BUCKET" && \
+					rm "$FILE" && \
+					echo "Upload OK $FILE" > /proc/1/fd/1 || \
+					echo "Upload NOK $FILE" > /proc/1/fd/2; 
+			fi
+		else 
+			echo "$FILE does not exist." > /proc/1/fd/2; 
+		fi
+	done
+}
+
 # Reads from pipe until logrotate kicks in
-while read FILE < /tmp/message
+while read MSG < /tmp/message
 do
-  if [ -f "$FILE" ]; then
-    echo "Rotated file is $FILE" > /proc/1/fd/1; 
-    if [ -z "$BUCKET" ]; then
-      echo "Bucket definition is missing." > /proc/1/fd/2; 
-    else
-      curl --silent --show-error --fail --upload-file "$FILE" "$BUCKET" && \
-        rm "$FILE" && \
-        echo "Upload OK $FILE" > /proc/1/fd/1 || \
-        echo "Upload NOK $FILE" > /proc/1/fd/2; 
-    fi
-  else 
-    echo "$FILE does not exist." > /proc/1/fd/2; 
-  fi
+	process $(echo "$MSG"*.gz)
 done

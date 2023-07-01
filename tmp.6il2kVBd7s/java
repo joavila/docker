@@ -7,6 +7,6 @@
   copytruncate
   rotate 1
   postrotate
-    echo $2 > /tmp/message
+    echo $1 > /tmp/message
   endscript
 }
